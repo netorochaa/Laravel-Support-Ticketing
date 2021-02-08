@@ -10,7 +10,7 @@
                 </div>
             @endif
             <div class="card">
-                <div class="card-header">Ticket #{{ $ticket->id }}</div>
+                <div class="card-header">OS #{{ $ticket->id }}</div>
 
                 <div class="card-body">
                     <table class="table table-bordered table-striped">
@@ -83,7 +83,7 @@
                                     @empty
                                         <div class="row">
                                             <div class="col">
-                                                <p>There are no comments.</p>
+                                                <p>Por enquanto, nenhum comentário.</p>
                                             </div>
                                         </div>
                                     @endforelse
@@ -94,7 +94,7 @@
                     <form action="{{ route('tickets.storeComment', $ticket->id) }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="comment_text">Leave a comment</label>
+                            <label for="comment_text">Deseja adicionar um comentário?</label>
                             <textarea class="form-control @error('comment_text') is-invalid @enderror" id="comment_text" name="comment_text" rows="3" required></textarea>
                             @error('comment_text')
                                 <span class="invalid-feedback" role="alert">

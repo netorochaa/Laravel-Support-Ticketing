@@ -5,7 +5,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    Dashboard
+                    Dashboard - {{ Auth::user()->name }}
                 </div>
 
                 <div class="card-body">
@@ -20,7 +20,7 @@
                             <div class="card text-white bg-primary">
                                 <div class="card-body pb-3">
                                     <div class="text-value">{{ number_format($totalTickets) }}</div>
-                                    <div>Total tickets</div>
+                                    <div>Total OS</div>
                                     <br />
                                 </div>
                             </div>
@@ -30,7 +30,7 @@
                             <div class="card text-white bg-success">
                                 <div class="card-body pb-3">
                                     <div class="text-value">{{ number_format($openTickets) }}</div>
-                                    <div>Open tickets</div>
+                                    <div>OS abertas</div>
                                     <br />
                                 </div>
                             </div>
@@ -40,7 +40,7 @@
                             <div class="card text-white bg-danger">
                                 <div class="card-body pb-3">
                                     <div class="text-value">{{ number_format($closedTickets) }}</div>
-                                    <div>Closed tickets</div>
+                                    <div>OS solucionadas</div>
                                     <br />
                                 </div>
                             </div>

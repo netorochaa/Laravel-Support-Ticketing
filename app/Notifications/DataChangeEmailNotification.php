@@ -31,15 +31,16 @@ class DataChangeEmailNotification extends Notification
     public function getMessage()
     {
         return (new MailMessage)
+            ->from('manutencao.rds@roseannedore.com.br', 'Manutenção - Roseanne Dore')
             ->subject($this->data['action'])
-            ->greeting('Hi,')
+            ->greeting('Olá,')
             ->line($this->data['action'])
-            ->line("Customer: ".$this->ticket->author_name) 
-            ->line("Ticket name: ".$this->ticket->title)
-            ->line("Brief description: ".Str::limit($this->ticket->content, 200))
-            ->action('View full ticket', route('admin.tickets.show', $this->ticket->id))
-            ->line('Thank you')
-            ->line(config('app.name') . ' Team')
+            ->line("Requerente: ".$this->ticket->author_name) 
+            ->line("Título: ".$this->ticket->title)
+            ->line("Descrição: ".Str::limit($this->ticket->content, 200))
+            ->action('Clique aqui para acessá-lo', route('admin.tickets.show', $this->ticket->id))
+            ->line('Obrigado!')
+            ->line('Time ' . config('app.name'))
             ->salutation(' ');
     }
 }

@@ -10,14 +10,14 @@
                 </div>
             @endif
             <div class="card">
-                <div class="card-header">Add ticket</div>
+                <div class="card-header">Abrir OS</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('tickets.store') }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group row">
-                            <label for="author_name" class="col-md-4 col-form-label text-md-right">Your Name</label>
+                            <label for="author_name" class="col-md-4 col-form-label text-md-right">Seu Nome</label>
 
                             <div class="col-md-6">
                                 <input id="author_name" type="text" class="form-control @error('author_name') is-invalid @enderror" name="author_name" value="{{ old('author_name') }}" required autocomplete="name" autofocus>
@@ -31,7 +31,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="author_email" class="col-md-4 col-form-label text-md-right">Your Email</label>
+                            <label for="author_email" class="col-md-4 col-form-label text-md-right">E-mail</label>
 
                             <div class="col-md-6">
                                 <input id="author_email" type="email" class="form-control @error('author_email') is-invalid @enderror" name="author_email" value="{{ old('author_email') }}" required autocomplete="email">
