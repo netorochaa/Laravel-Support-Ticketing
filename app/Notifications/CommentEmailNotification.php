@@ -49,8 +49,7 @@ class CommentEmailNotification extends Notification
                     ->line('')
                     ->line(Str::limit($this->comment->comment_text, 500))
                     ->action('Clique aqui para ver a OS completa', route(optional($notifiable)->id ? 'admin.tickets.show' : 'tickets.show', $this->comment->ticket->id))
-                    ->line('Obrigado')
-                    ->line('Time ' . config('app.name'))
+                    ->line('Obrigado!')
                     ->salutation(' ');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Notifications\DataChangeEmailNotification;
 use App\Notifications\AssignedTicketNotification;
+use App\Notifications\UpdateDataEmailNotification;
 use App\Ticket;
 use Illuminate\Support\Facades\Notification;
 
@@ -28,5 +29,8 @@ class TicketActionObserver
                 Notification::send($user, new AssignedTicketNotification($model));
             }
         }
+
+        if($model->author_email)
+            Notification::route('mail', $model->author_email)->notify(new UpdateDataEmailNotification($model));
     }
 }

@@ -47,7 +47,6 @@ class AssignedTicketNotification extends Notification
                     ->line('Você recebeu a seguinte OS: '.$this->ticket->title)
                     ->action('Clique aqui para acessá-la', route('admin.tickets.show', $this->ticket->id))
                     ->line('Obrigado!')
-                    ->line('Time ' . config('app.name'))
                     ->salutation(' ');
     }
 }
