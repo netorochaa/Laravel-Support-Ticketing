@@ -31,8 +31,10 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="#">
+            <img src="{{ asset('image/logo_image.png') }}"
+              alt="Laboratório Roseanne Dore"
+              class="brand-image" width="30">
             <span class="navbar-brand-full">{{ trans('panel.site_title_side') }}</span>
-            <span class="navbar-brand-minimized">{{ trans('panel.site_title_side') }}</span>
         </a>
         <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
             <span class="navbar-toggler-icon"></span>
