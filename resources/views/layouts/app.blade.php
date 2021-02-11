@@ -16,6 +16,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
+    <link rel="sortcut icon" href="{{ asset('image/logo.ico') }}" type="image/x-icon" />
 </head>
 <body>
     <div id="app">
