@@ -106,13 +106,13 @@
     var uploadedAttachmentsMap = {}
 Dropzone.options.attachmentsDropzone = {
     url: '{{ route('tickets.storeMedia') }}',
-    maxFilesize: 2, // MB
+    maxFilesize: 50, // MB
     addRemoveLinks: true,
     headers: {
       'X-CSRF-TOKEN': "{{ csrf_token() }}"
     },
     params: {
-      size: 2
+      size: 50
     },
     success: function (file, response) {
       $('form').append('<input type="hidden" name="attachments[]" value="' + response.name + '">')
