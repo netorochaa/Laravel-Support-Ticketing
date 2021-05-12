@@ -90,7 +90,7 @@ let filters = `
 $('.card-body').on('change', 'select', function() {
   $('#filtersForm').submit();
 })
-  let dtButtons = []
+  let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 @can('ticket_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
   let deleteButton = {
@@ -174,10 +174,19 @@ $('.card-body').on('change', 'select', function() {
     order: [[ 1, 'desc' ]],
     pageLength: 100,
   };    
-$(".datatable-Ticket").one("preInit.dt", function () {
- $(".dataTables_filter").after(filters);
-});
+  $(".datatable-Ticket").one("preInit.dt", function () {
+    $(".dataTables_filter").after(filters);
+  });
   $('.datatable-Ticket').DataTable(dtOverrideGlobals);
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+        $($.fn.dataTable.tables(true)).DataTable()
+            .columns.adjust();
+  });
+  $.extend(true, $.fn.dataTable.defaults, {
+    order: [[ 1, 'desc' ]],
+    pageLength: 100,
+  });
+  $('.datatable-Ticket:not(.ajaxTable)').DataTable({ buttons: dtButtons })
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
         $($.fn.dataTable.tables(true)).DataTable()
             .columns.adjust();
