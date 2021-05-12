@@ -17,7 +17,7 @@
 
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="card text-white bg-primary">
+                            <div class="card text-white bg-dark">
                                 <div class="card-body pb-3">
                                     <div class="text-value">{{ number_format($totalTickets) }}</div>
                                     <div>Total OS</div>
@@ -30,7 +30,27 @@
                             <div class="card text-white bg-success">
                                 <div class="card-body pb-3">
                                     <div class="text-value">{{ number_format($openTickets) }}</div>
-                                    <div>OS abertas</div>
+                                    <div>Abertas</div>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card text-white bg-primary">
+                                <div class="card-body pb-3">
+                                    <div class="text-value">{{ number_format($progressTickets) }}</div>
+                                    <div>Em progresso</div>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card text-white bg-info">
+                                <div class="card-body pb-3">
+                                    <div class="text-value">{{ number_format($closedTickets) }}</div>
+                                    <div>Solucionadas</div>
                                     <br />
                                 </div>
                             </div>
@@ -39,8 +59,8 @@
                         <div class="col-md-4">
                             <div class="card text-white bg-danger">
                                 <div class="card-body pb-3">
-                                    <div class="text-value">{{ number_format($closedTickets) }}</div>
-                                    <div>OS solucionadas</div>
+                                    <div class="text-value">{{ number_format($cancelledTickets) }}</div>
+                                    <div>Canceladas</div>
                                     <br />
                                 </div>
                             </div>
