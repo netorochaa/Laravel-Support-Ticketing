@@ -28,6 +28,9 @@
                         {{ trans('cruds.ticket.fields.title') }}
                     </th>
                     <th>
+                        {{ trans('cruds.ticket.fields.created_at') }}
+                    </th>
+                    <th>
                         {{ trans('cruds.ticket.fields.status') }}
                     </th>
                     <th>
@@ -144,6 +147,14 @@ $('.card-body').on('change', 'select', function() {
     render: function ( data, type, row) {
         return '<a href="'+row.view_link+'">'+data+' ('+row.comments_count+')</a>';
     }
+},
+{ data: 'created_at', 
+  name: 'created_at',
+  render: function ( data, type, row) {
+        let objDate = new Date(data);
+        let formatDate = (objDate.getFullYear() + "-" + ((objDate.getMonth()+1) < 10 ? "0"+(objDate.getMonth()+1) : (objDate.getMonth()+1)) + "-" + objDate.getDate() + " " + objDate.getHours() + ":" + objDate.getMinutes());
+        return '<small>'+formatDate+'</small>';
+  } 
 },
 { 
   data: 'status_name', 
