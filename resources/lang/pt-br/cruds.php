@@ -154,7 +154,7 @@ return [
         ],
     ],
     'comment'        => [
-        'title'          => 'comentários',
+        'title'          => 'Comentários OS',
         'title_singular' => 'Comentário',
         'fields'         => [
             'id'                  => 'ID',

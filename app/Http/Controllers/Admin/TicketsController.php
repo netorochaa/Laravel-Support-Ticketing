@@ -26,6 +26,7 @@ class TicketsController extends Controller
         if ($request->ajax()) {
             $query = Ticket::with(['status', 'priority', 'category', 'assigned_to_user', 'comments'])
                 ->filterTickets($request)
+                ->filterStatus($request)
                 ->select(sprintf('%s.*', (new Ticket)->table));
             $table = Datatables::of($query);
 

@@ -97,12 +97,20 @@ class Ticket extends Model implements HasMedia
                 $query->whereHas('category', function($query) {
                     $query->whereId(request()->input('category'));
                 });
-            })
-            ->when(request()->input('status'), function($query) {
-                $query->whereHas('status', function($query) {
-                    $query->whereId(request()->input('status'));
-                });
             });
+    }
+
+    public function scopeFilterStatus($query)
+    {
+        if(request()->input('status')){
+            $query->when(request()->input('status'), function($query) {
+                    $query->whereHas('status', function($query) {
+                        $query->whereId(request()->input('status'));
+                    });
+                });
+        } else {
+            $query->whereNotIn('status_id', [2,4]);
+        }
     }
 
     public function sendCommentNotification($comment)
