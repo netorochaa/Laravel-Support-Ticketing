@@ -114,7 +114,7 @@
             @if(auth()->user()->email == 'newdsonguedes@hotmail.com' || auth()->user()->email == 'zelia@roseannedore.com.br' || auth()->user()->email == 'jose.neto@roseannedore.com.br')
                 <div class="form-group">
                     <label for="value">Valor</label>
-                    <input type="text" id="value" name="value" class="form-control" value="{{ old('value', isset($ticket) ? $ticket->author_email : '') }}">
+                    <input type="text" id="value" name="value" class="form-control" value="{{ old('value', isset($ticket) ? $ticket->value : '') }}">
                 </div>
             @endif
             @if(auth()->user()->isAdmin())
