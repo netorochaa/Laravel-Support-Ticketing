@@ -40,6 +40,7 @@ class Ticket extends Model implements HasMedia
         'author_name',
         'author_email',
         'assigned_to_user_id',
+        'value'
     ];
 
     public static function boot()

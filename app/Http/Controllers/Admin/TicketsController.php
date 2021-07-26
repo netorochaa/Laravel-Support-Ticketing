@@ -84,6 +84,9 @@ class TicketsController extends Controller
             $table->addColumn('assigned_to_user_name', function ($row) {
                 return $row->assigned_to_user ? $row->assigned_to_user->name : '';
             });
+            $table->addColumn('value', function ($row) {
+                return $row->value ? $row->value : '';
+            });
 
             $table->addColumn('comments_count', function ($row) {
                 return $row->comments->count();
@@ -93,7 +96,7 @@ class TicketsController extends Controller
                 return route('admin.tickets.show', $row->id);
             });
 
-            $table->rawColumns(['actions', 'placeholder', 'status', 'priority', 'category', 'assigned_to_user']);
+            $table->rawColumns(['actions', 'placeholder', 'status', 'priority', 'category', 'assigned_to_user', 'value']);
 
             return $table->make(true);
         }

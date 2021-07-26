@@ -111,6 +111,12 @@
                     {{ trans('cruds.ticket.fields.author_email_helper') }}
                 </p>
             </div>
+            @if(auth()->user()->email == 'newdsonguedes@hotmail.com' || auth()->user()->email == 'zelia@roseannedore.com.br' || auth()->user()->email == 'jose.neto@roseannedore.com.br')
+                <div class="form-group">
+                    <label for="value">Valor</label>
+                    <input type="text" id="value" name="value" class="form-control" value="{{ old('value', isset($ticket) ? $ticket->author_email : '') }}">
+                </div>
+            @endif
             @if(auth()->user()->isAdmin())
                 <div class="form-group {{ $errors->has('assigned_to_user_id') ? 'has-error' : '' }}">
                     <label for="assigned_to_user">{{ trans('cruds.ticket.fields.assigned_to_user') }}</label>
