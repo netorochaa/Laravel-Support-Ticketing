@@ -184,7 +184,9 @@ $('.card-body').on('change', 'select', function() {
 },
 { data: 'author_name', name: 'author_name' },
 { data: 'author_email', name: 'author_email' },
-{ data: 'value', name: 'value' },
+@if (Auth::user()->email == 'newdsonguedes@hotmail.com' || Auth::user()->email == 'zelia@roseannedore.com.br' || Auth::user()->email == 'jose.neto@roseannedore.com.br')
+  { data: 'value', name: 'value' },
+@endif
 { data: 'assigned_to_user_name', name: 'assigned_to_user.name' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],
