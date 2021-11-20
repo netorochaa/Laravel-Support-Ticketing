@@ -9,6 +9,7 @@ use App\Http\Requests\MassDestroyTicketRequest;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
 use App\Priority;
+use App\Services\SaveFilterSessionService;
 use App\Status;
 use App\Ticket;
 use App\User;
@@ -105,6 +106,10 @@ class TicketsController extends Controller
         $statuses = Status::all();
         $categories = Category::all();
 
+        if ($request->has('status')) {
+            (new SaveFilterSessionService())->save($request->all());
+        }
+
         return view('admin.tickets.index', compact('priorities', 'statuses', 'categories'));
     }
 
@@ -118,9 +123,9 @@ class TicketsController extends Controller
 
         $categories = Category::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $assigned_to_users = User::whereHas('roles', function($query) {
-                $query->whereId(2);
-            })
+        $assigned_to_users = User::whereHas('roles', function ($query) {
+            $query->whereId(2);
+        })
             ->pluck('name', 'id')
             ->prepend(trans('global.pleaseSelect'), '');
 
@@ -148,9 +153,9 @@ class TicketsController extends Controller
 
         $categories = Category::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $assigned_to_users = User::whereHas('roles', function($query) {
-                $query->whereId(2);
-            })
+        $assigned_to_users = User::whereHas('roles', function ($query) {
+            $query->whereId(2);
+        })
             ->pluck('name', 'id')
             ->prepend(trans('global.pleaseSelect'), '');
 
@@ -223,5 +228,12 @@ class TicketsController extends Controller
         $ticket->sendCommentNotification($comment);
 
         return redirect()->back()->withStatus('Your comment added successfully');
+    }
+
+    public function clearFilters()
+    {
+        (new SaveFilterSessionService())->clear();
+
+        return redirect()->route('admin.tickets.index');
     }
 }

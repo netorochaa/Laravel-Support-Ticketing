@@ -45,6 +45,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('tickets/destroy', 'TicketsController@massDestroy')->name('tickets.massDestroy');
     Route::post('tickets/media', 'TicketsController@storeMedia')->name('tickets.storeMedia');
     Route::post('tickets/comment/{ticket}', 'TicketsController@storeComment')->name('tickets.storeComment');
+    Route::get('tickets/clearFilters', 'TicketsController@clearFilters')->name('tickets.clearFilters');
     Route::resource('tickets', 'TicketsController');
 
     // Comments
