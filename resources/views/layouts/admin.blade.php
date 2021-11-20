@@ -125,7 +125,7 @@
     'pt-br': 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json'
   };
 
-  $.extend(true, $.fn.dataTable.Buttons.defaults.dom.button, { className: 'btn' })
+  $.extend(true, $.fn.dataTable.Buttons.defaults.dom.button, { className: 'btn btn-sm' })
   $.extend(true, $.fn.dataTable.defaults, {
     language: {
       url: languages['pt-br']
