@@ -77,8 +77,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function isAdminOrManager()
+    {
+        return (bool) $this->roles->contains(1) || $this->roles->contains(3);
+    }
+
     public function isAdmin()
     {
-        return $this->roles->contains(1) || $this->roles->contains(3) ? true : false;
+        return (bool) $this->roles->contains(1);
     }
 }

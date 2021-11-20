@@ -45,7 +45,7 @@
                     <th>
                         {{ trans('cruds.ticket.fields.author_email') }}
                     </th>
-                    @if (Auth::user()->email == 'newdsonguedes@hotmail.com' || Auth::user()->email == 'zelia@roseannedore.com.br' || Auth::user()->email == 'jose.neto@roseannedore.com.br')
+                    @if (Auth::user()->email == 'newdsonguedes@hotmail.com' || Auth::user()->email == 'zelia@roseannedore.com.br' || Auth::user()->isAdmin())
                       <th>
                           Valor
                       </th>
@@ -184,7 +184,7 @@ $('.card-body').on('change', 'select', function() {
 },
 { data: 'author_name', name: 'author_name' },
 { data: 'author_email', name: 'author_email' },
-@if (Auth::user()->email == 'newdsonguedes@hotmail.com' || Auth::user()->email == 'zelia@roseannedore.com.br' || Auth::user()->email == 'jose.neto@roseannedore.com.br')
+@if (Auth::user()->email == 'newdsonguedes@hotmail.com' || Auth::user()->email == 'zelia@roseannedore.com.br' || Auth::user()->isAdmin())
   { data: 'value', name: 'value' },
 @endif
 { data: 'assigned_to_user_name', name: 'assigned_to_user.name' },

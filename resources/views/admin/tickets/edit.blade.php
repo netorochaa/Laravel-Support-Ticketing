@@ -117,7 +117,7 @@
                     <input type="text" id="value" name="value" class="form-control" value="{{ old('value', isset($ticket) ? $ticket->value : '') }}">
                 </div>
             @endif
-            @if(auth()->user()->isAdmin())
+            @if(auth()->user()->isAdminOrManager())
                 <div class="form-group {{ $errors->has('assigned_to_user_id') ? 'has-error' : '' }}">
                     <label for="assigned_to_user">{{ trans('cruds.ticket.fields.assigned_to_user') }}</label>
                     <select name="assigned_to_user_id" id="assigned_to_user" class="form-control select2">
