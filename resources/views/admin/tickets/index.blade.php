@@ -45,7 +45,7 @@
                     <th>
                         {{ trans('cruds.ticket.fields.author_email') }}
                     </th>
-                    @if (Auth::user()->email == 'newdsonguedes@hotmail.com' || Auth::user()->email == 'zelia@roseannedore.com.br' || Auth::user()->email == 'jose.neto@roseannedore.com.br')
+                    @if (Auth::user()->email == 'newdsonguedes@hotmail.com' || Auth::user()->email == 'zelia@roseannedore.com.br' || Auth::user()->isAdmin())
                       <th>
                           Valor
                       </th>
@@ -69,32 +69,43 @@
 <script>
     $(function () {
 let filters = `
-<form class="form-inline" id="filtersForm">
-  <div class="form-group mx-sm-3 mb-2">
-    <select class="form-control" name="status">
+<form class="form-inline d-flex justify-content-center" id="filtersForm">
+  <div class="form-group mx-sm-1 mb-2">
+    <select class="form-control custom-select-sm" name="status">
       <option value="">Todos pendentes</option>
       @foreach($statuses as $status)
-        <option value="{{ $status->id }}"{{ request('status') == $status->id ? 'selected' : '' }}>{{ $status->name }}</option>
+        <option value="{{ $status->id }}" 
+            @if(session('filters')) {{session('filters')['status'] == $status->id ? 'selected' : ''}} @endif>
+          {{ $status->name }}
+        </option>
       @endforeach
     </select>
   </div>
-  <div class="form-group mx-sm-3 mb-2">
-    <select class="form-control" name="priority">
+  <div class="form-group mx-sm-1 mb-2">
+    <select class="form-control custom-select-sm" name="priority">
       <option value="">Todas prioridades</option>
       @foreach($priorities as $priority)
-        <option value="{{ $priority->id }}"{{ request('priority') == $priority->id ? 'selected' : '' }}>{{ $priority->name }}</option>
+        <option value="{{ $priority->id }}" @if(session('filters')) {{session('filters')['priority'] == $priority->id ? 'selected' : ''}} @endif >{{ $priority->name }}</option>
       @endforeach
     </select>
   </div>
-  <div class="form-group mx-sm-3 mb-2">
-    <select class="form-control" name="category">
+  <div class="form-group ml-1 mb-2">
+    <select class="form-control custom-select-sm" name="category">
       <option value="">Todas categorias</option>
       @foreach($categories as $category)
-        <option value="{{ $category->id }}"{{ request('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+        <option value="{{ $category->id }}" @if(session('filters')) {{session('filters')['category'] == $category->id ? 'selected' : ''}} @endif>{{ $category->name }}</option>
       @endforeach
     </select>
   </div>
-</form>`;
+  @if(session('filters'))
+    <div class="mx-sm-2 mb-2 ">
+      <span class="badge badge-warning">
+        <a class="text-dark" href="{{ route('admin.tickets.clearFilters') }}">Limpar filtros</a>
+      </span>
+    </div>
+  @endif
+</form>
+`;
 $('.card-body').on('change', 'select', function() {
   $('#filtersForm').submit();
 })
@@ -128,7 +139,6 @@ $('.card-body').on('change', 'select', function() {
   }
   dtButtons.push(deleteButton)
 @endcan
-  let searchParams = new URLSearchParams(window.location.search)
   let dtOverrideGlobals = {
     buttons: dtButtons,
     processing: true,
@@ -138,9 +148,9 @@ $('.card-body').on('change', 'select', function() {
     ajax: {
       url: "{{ route('admin.tickets.index') }}",
       data: {
-        'status': searchParams.get('status'),
-        'priority': searchParams.get('priority'),
-        'category': searchParams.get('category')
+        'status': "{{ session('filters') ? session('filters')['status'] : '' }}",
+        'priority': "{{ session('filters') ? session('filters')['priority'] : '' }}",
+        'category': "{{ session('filters') ? session('filters')['category'] : '' }}"
       }
     },
     columns: [
@@ -184,7 +194,7 @@ $('.card-body').on('change', 'select', function() {
 },
 { data: 'author_name', name: 'author_name' },
 { data: 'author_email', name: 'author_email' },
-@if (Auth::user()->email == 'newdsonguedes@hotmail.com' || Auth::user()->email == 'zelia@roseannedore.com.br' || Auth::user()->email == 'jose.neto@roseannedore.com.br')
+@if (Auth::user()->email == 'newdsonguedes@hotmail.com' || Auth::user()->email == 'zelia@roseannedore.com.br' || Auth::user()->isAdmin())
   { data: 'value', name: 'value' },
 @endif
 { data: 'assigned_to_user_name', name: 'assigned_to_user.name' },

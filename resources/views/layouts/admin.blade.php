@@ -116,7 +116,7 @@
   let copyButtonTrans = '{{ trans('global.datatables.copy') }}'
   let csvButtonTrans = '{{ trans('global.datatables.csv') }}'
   let excelButtonTrans = '{{ trans('global.datatables.excel') }}'
-  let pdfButtonTrans = '{{ trans('global.datatables.pdf') }}'
+  // let pdfButtonTrans = '{{ trans('global.datatables.pdf') }}'
   let printButtonTrans = '{{ trans('global.datatables.print') }}'
   let colvisButtonTrans = '{{ trans('global.datatables.colvis') }}'
 
@@ -125,7 +125,7 @@
     'pt-br': 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json'
   };
 
-  $.extend(true, $.fn.dataTable.Buttons.defaults.dom.button, { className: 'btn' })
+  $.extend(true, $.fn.dataTable.Buttons.defaults.dom.button, { className: 'btn btn-sm' })
   $.extend(true, $.fn.dataTable.defaults, {
     language: {
       url: languages['pt-br']
@@ -172,14 +172,14 @@
           columns: ':visible'
         }
       },
-      {
-        extend: 'pdf',
-        className: 'btn-default',
-        text: pdfButtonTrans,
-        exportOptions: {
-          columns: ':visible'
-        }
-      },
+      // {
+      //   extend: 'pdf',
+      //   className: 'btn-default',
+      //   text: pdfButtonTrans,
+      //   exportOptions: {
+      //     columns: ':visible'
+      //   }
+      // },
       {
         extend: 'print',
         className: 'btn-default',

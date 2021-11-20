@@ -44,6 +44,7 @@
                 </thead>
                 <tbody>
                     @foreach($users as $key => $user)
+                        @if($user->id != 1)
                         <tr data-entry-id="{{ $user->id }}">
                             <td>
 
@@ -89,6 +90,7 @@
                             </td>
 
                         </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </table>
