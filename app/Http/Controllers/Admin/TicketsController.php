@@ -15,6 +15,7 @@ use App\Ticket;
 use App\User;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -26,9 +27,13 @@ class TicketsController extends Controller
     {
         if ($request->ajax()) {
             $query = Ticket::with(['status', 'priority', 'category', 'assigned_to_user', 'comments'])
-                ->filterTickets($request)
+                ->filterPriority($request)
+                ->filterCategory($request)
                 ->filterStatus($request)
-                ->select(sprintf('%s.*', (new Ticket)->table));
+                ->filterMinDate($request)
+                ->filterMaxDate($request)
+            ->select(sprintf('%s.*', (new Ticket)->table));
+
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');

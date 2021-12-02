@@ -8,6 +8,7 @@ use App\Notifications\CommentEmailNotification;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -87,62 +88,72 @@ class Ticket extends Model implements HasMedia
         return $this->belongsTo(User::class, 'assigned_to_user_id');
     }
 
-    public function scopeFilterTickets($query)
+    public function scopeFilterPriority($query)
     {
-        $query->when(request()->input('priority'), function($query) {
-                $query->whereHas('priority', function($query) {
-                    $query->whereId(request()->input('priority'));
-                });
-            })
-            ->when(request()->input('category'), function($query) {
-                $query->whereHas('category', function($query) {
-                    $query->whereId(request()->input('category'));
-                });
+        $query->when(request()->input('priority'), function ($query) {
+            $query->whereHas('priority', function ($query) {
+                $query->whereId(request()->input('priority'));
             });
+        });
+    }
+
+    public function scopeFilterCategory($query)
+    {
+        $query->when(request()->input('category'), function ($query) {
+            $query->whereHas('category', function ($query) {
+                $query->whereId(request()->input('category'));
+            });
+        });
     }
 
     public function scopeFilterStatus($query)
     {
-        if(request()->input('status')){
-            $query->when(request()->input('status'), function($query) {
-                    $query->whereHas('status', function($query) {
-                        $query->whereId(request()->input('status'));
-                    });
-                });
+        if (request()->input('status')) {
+            $query->whereHas('status', function ($query) {
+                $query->whereId(request()->input('status'));
+            });
         } else {
             $query->whereNotIn('status_id', [2,4]);
         }
     }
 
+    public function scopeFilterMinDate($query)
+    {
+        $query->when(request()->get('min'), function ($query) {
+            return $query->whereDate('created_at', '>=', Carbon::parse(request()->get('min'))->toDateTimeString());
+        });
+    }
+
+    public function scopeFilterMaxDate($query)
+    {
+        $query->when(request()->get('max'), function ($query) {
+            return $query->whereDate('created_at', '<=', Carbon::parse(request()->get('max'))->toDateTimeString());
+        });
+    }
+
     public function sendCommentNotification($comment)
     {
         $users = \App\User::where(function ($q) {
-                $q->whereHas('roles', function ($q) {
-                    return $q->where('title', 'Agent');
-                })
-                ->where(function ($q) {
-                    $q->whereHas('comments', function ($q) {
-                        return $q->whereTicketId($this->id);
-                    })
-                    ->orWhereHas('tickets', function ($q) {
-                        return $q->whereId($this->id);
-                    }); 
+            $q->whereHas('roles', function ($q) {
+                return $q->where('title', 'Agent');
+            })->where(function ($q) {
+                $q->whereHas('comments', function ($q) {
+                    return $q->whereTicketId($this->id);
+                })->orWhereHas('tickets', function ($q) {
+                    return $q->whereId($this->id);
                 });
-            })
-            ->when(!$comment->user_id && !$this->assigned_to_user_id, function ($q) {
-                $q->orWhereHas('roles', function ($q) {
-                    return $q->where('title', 'Admin');
-                });
-            })
-            ->when($comment->user, function ($q) use ($comment) {
-                $q->where('id', '!=', $comment->user_id);
-            })
-            ->get();
+            });
+        })->when(!$comment->user_id && !$this->assigned_to_user_id, function ($q) {
+            $q->orWhereHas('roles', function ($q) {
+                return $q->where('title', 'Admin');
+            });
+        })->when($comment->user, function ($q) use ($comment) {
+            $q->where('id', '!=', $comment->user_id);
+        })->get();
         $notification = new CommentEmailNotification($comment);
 
         Notification::send($users, $notification);
-        if($comment->user_id && $this->author_email)
-        {
+        if ($comment->user_id && $this->author_email) {
             Notification::route('mail', $this->author_email)->notify($notification);
         }
     }
