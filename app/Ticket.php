@@ -5,6 +5,7 @@ namespace App;
 use App\Scopes\AgentScope;
 use App\Traits\Auditable;
 use App\Notifications\CommentEmailNotification;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -88,46 +89,50 @@ class Ticket extends Model implements HasMedia
         return $this->belongsTo(User::class, 'assigned_to_user_id');
     }
 
-    public function scopeFilterPriority($query)
+    public function scopeFilterPriority(Builder $query, ?int $priority_id)
     {
-        $query->when(request()->input('priority'), function ($query) {
-            $query->whereHas('priority', function ($query) {
-                $query->whereId(request()->input('priority'));
-            });
+        $query->when($priority_id, function ($query) use ($priority_id) {
+            $query->whereHas('priority', fn ($query) => $query->whereId($priority_id));
         });
     }
 
-    public function scopeFilterCategory($query)
+    public function scopeFilterCategory(Builder $query, ?int $category_id)
     {
-        $query->when(request()->input('category'), function ($query) {
-            $query->whereHas('category', function ($query) {
-                $query->whereId(request()->input('category'));
-            });
+        $query->when($category_id, function ($query) use ($category_id) {
+            $query->whereHas('category', fn ($query) => $query->whereId($category_id));
         });
     }
 
-    public function scopeFilterStatus($query)
+    public function scopeFilterStatus(Builder $query, ?int $status_id)
     {
-        if (request()->input('status')) {
-            $query->whereHas('status', function ($query) {
-                $query->whereId(request()->input('status'));
+        if ($status_id) {
+            $query->whereHas('status', function ($query) use ($status_id) {
+                $query->whereId($status_id);
             });
         } else {
             $query->whereNotIn('status_id', [2,4]);
         }
     }
 
-    public function scopeFilterMinDate($query)
+    public function scopeFilterMinDate(Builder $query, ?string $date)
     {
-        $query->when(request()->get('min'), function ($query) {
-            return $query->whereDate('created_at', '>=', Carbon::parse(request()->get('min'))->toDateTimeString());
+        $query->when($date, function ($query) use ($date) {
+            return $query->whereDate(
+                'created_at',
+                '>=',
+                Carbon::parse($date)->toDateTimeString()
+            );
         });
     }
 
-    public function scopeFilterMaxDate($query)
+    public function scopeFilterMaxDate(Builder $query, ?string $date)
     {
-        $query->when(request()->get('max'), function ($query) {
-            return $query->whereDate('created_at', '<=', Carbon::parse(request()->get('max'))->toDateTimeString());
+        $query->when($date, function ($query) use ($date) {
+            return $query->whereDate(
+                'created_at',
+                '<=',
+                Carbon::parse($date)->toDateTimeString()
+            );
         });
     }
 
