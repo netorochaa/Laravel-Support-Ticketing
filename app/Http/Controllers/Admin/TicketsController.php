@@ -25,13 +25,17 @@ class TicketsController extends Controller
 
     public function index(Request $request)
     {
+        if ($request->has('min')) {
+            (new SaveFilterSessionService())->save($request->all());
+        }
+        
         if ($request->ajax()) {
             $query = Ticket::with(['status', 'priority', 'category', 'assigned_to_user', 'comments'])
-                ->filterPriority($request)
-                ->filterCategory($request)
-                ->filterStatus($request)
-                ->filterMinDate($request)
-                ->filterMaxDate($request)
+                ->filterPriority(!array_key_exists('priority', session('filters') ?? []) ? null : session('filters')['priority'])
+                ->filterCategory(!array_key_exists('category', session('filters') ?? []) ? null : session('filters')['category'])
+                ->filterStatus(!array_key_exists('status', session('filters') ?? []) ? null : session('filters')['status'])
+                ->filterMinDate(!array_key_exists('min', session('filters') ?? []) ? null : session('filters')['min'])
+                ->filterMaxDate(!array_key_exists('max', session('filters') ?? []) ? null : session('filters')['max'])
             ->select(sprintf('%s.*', (new Ticket)->table));
 
             $table = Datatables::of($query);
@@ -110,10 +114,6 @@ class TicketsController extends Controller
         $priorities = Priority::all();
         $statuses = Status::all();
         $categories = Category::all();
-
-        if ($request->has('status')) {
-            (new SaveFilterSessionService())->save($request->all());
-        }
 
         return view('admin.tickets.index', compact('priorities', 'statuses', 'categories'));
     }

@@ -15,54 +15,54 @@
         </div>
 
         <div class="card-body">
-            <table border="0" cellspacing="5" cellpadding="5">
-                <tbody>
-                    <tr>
-                        <form class="form-inline d-flex justify-content-center" id="filtersForm">
-                            <td>Data inicial:</td>
-                            <td><input type="text" id="min" name="min" value="@if (session('filters')) {{ session('filters')['min'] ?? '' }} @endif"></td>
-                            <td>Data final:</td>
-                            <td><input type="text" id="max" name="max" value="@if (session('filters')) {{ session('filters')['max'] ?? '' }} @endif"></td>
-                            <td>
-                                <select class="form-control custom-select-sm" name="status">
-                                    <option value="">Todos pendentes</option>
-                                    @foreach ($statuses as $status)
-                                        <option value="{{ $status->id }}" @if (session('filters')) {{ session('filters')['status'] == $status->id ? 'selected' : '' }} @endif>
-                                            {{ $status->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <select class="form-control custom-select-sm" name="priority">
-                                    <option value="">Todas prioridades</option>
-                                    @foreach ($priorities as $priority)
-                                        <option value="{{ $priority->id }}" @if (session('filters')) {{ session('filters')['priority'] == $priority->id ? 'selected' : '' }} @endif>
-                                            {{ $priority->name }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <select class="form-control custom-select-sm" name="category">
-                                    <option value="">Todas categorias</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}" @if (session('filters')) {{ session('filters')['category'] == $category->id ? 'selected' : '' }} @endif>
-                                            {{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            @if (session('filters'))
-                                <td>
-                                    <span class="badge badge-warning">
-                                        <a class="text-dark" href="{{ route('admin.tickets.clearFilters') }}">Limpar
-                                            filtros</a>
-                                    </span>
-                                </td>
-                            @endif
-                        </form>
-                    </tr>
-                </tbody>
-            </table>
+            <form class="form-inline mb-2" id="filtersForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="min">Data inicial</label>
+                        <input type="text" id="min" class="form-control form-control-sm ml-1" name="min" value="@if (session('filters')) {{ session('filters')['min'] ?? '' }} @endif">
+                    </div>
+                    <div class="form-group ml-2">
+                        <label for="min">Data Final</label>
+                        <input type="text" id="max" class="form-control form-control-sm ml-1" name="max" value="@if (session('filters')) {{ session('filters')['max'] ?? '' }} @endif">
+                    </div>
+                    <div class="form-group ml-2">
+                        <select class="form-control custom-select-sm" name="status">
+                            <option value="">Todos pendentes</option>
+                            @foreach ($statuses as $status)
+                                <option 
+                                    value="{{ $status->id }}" 
+                                    @if (session('filters')) {{ session('filters')['status'] == $status->id ? 'selected' : '' }} @endif>
+                                    {{ $status->name }}
+                                </option>
+                            @endforeach
+                        </select>            
+                    </div>    
+                    <div class="form-group ml-2">
+                        <select class="form-control custom-select-sm" name="priority">
+                            <option value="">Todas prioridades</option>
+                            @foreach ($priorities as $priority)
+                                <option value="{{ $priority->id }}" @if (session('filters')) {{ session('filters')['priority'] == $priority->id ? 'selected' : '' }} @endif>
+                                    {{ $priority->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group ml-2">
+                        <select class="form-control custom-select-sm" name="category">
+                            <option value="">Todas categorias</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}" @if (session('filters')) {{ session('filters')['category'] == $category->id ? 'selected' : '' }} @endif>
+                                    {{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @if (session('filters'))
+                        <button type="button" class="btn btn-warning btn-sm ml-2">
+                            <a class="text-dark" href="{{ route('admin.tickets.clearFilters') }}">Limpar
+                                filtros</a>
+                        </button>
+                    @endif
+                </div>
+            </form>
             <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-Ticket">
                 <thead>
                     <tr>
